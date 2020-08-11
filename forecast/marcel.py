@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 class MarcelForecaster:
     """
     Creates Marcel Forecasts for baseball players. 
