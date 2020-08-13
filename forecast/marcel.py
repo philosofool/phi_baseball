@@ -1,5 +1,21 @@
 import pandas as pd
 
+"""
+Contains functions and classes for handling Marcel Projections as proposed by Tom Tango.
+
+See his webpage (http://www.tangotiger.net/archives/stud0346.shtml). See Tango's comment #28 for pitcher details.
+
+WARNING: The directory structure in phi_baseball is note final. File locations may change.
+
+Classes
+-------
+
+MarcelForecaster
+    Creates Marcel Forecasts for baseball players. This is a stable release and the API
+    will be compatible with future versions; current file/directory location in phi_baseball
+    may be subject to change.
+
+"""
 
 class MarcelForecaster:
     """
