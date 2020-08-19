@@ -259,7 +259,7 @@ class MarcelForecaster:
             return out
     
     def expected_mean_pitcher(self,season, use_default = False):
-        """.drop(['Season','playerid','Age'])
+        """
         Returns a series which is the weighted mean of pitchers in self.pitchers or a default
         
         Parameters
@@ -267,7 +267,7 @@ class MarcelForecaster:
         season: int
             The season for which an expected mean is desired.
             
-        use_default: bool.drop(['Season','playerid','Age'])
+        use_default: bool
             If true, uses the default pitcher assigned to self.default_pitcher. If false,
             calculates the mean from the data in self.pitchers.
             
