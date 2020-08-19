@@ -133,3 +133,6 @@ dmypy.json
 .vs
 .vscode
 
+#local directory for statcast dumps, which may be 100+ MB in size.
+
+statcast_dumps/
