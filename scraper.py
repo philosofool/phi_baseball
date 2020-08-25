@@ -7,6 +7,9 @@ Currently this just scrapes statcast, which does not permit downloading .csvs of
 Documentation on baseball_scraper: https://pypi.org/project/baseball-scraper/
 '''
 
+import baseball_scraper
+import pandas as pd
+
 def statcast_scrape(start,end):
     '''
     Returns a DataFrame of all the successfull scraped time slices in range start, end. 
