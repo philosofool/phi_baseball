@@ -9,6 +9,7 @@ Documentation on baseball_scraper: https://pypi.org/project/baseball-scraper/
 
 import baseball_scraper
 import pandas as pd
+import datetime
 
 def statcast_scrape(start,end):
     '''
