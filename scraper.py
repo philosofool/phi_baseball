@@ -9,6 +9,7 @@ Documentation on baseball_scraper: https://pypi.org/project/baseball-scraper/
 
 import baseball_scraper
 import pandas as pd
+import datetime
 
 def statcast_scrape(start,end):
     '''
@@ -24,7 +25,7 @@ def statcast_scrape(start,end):
     scrapes = [] ##
     while True:
         try:
-            temp = statcast(start.strftime("%Y-%m-%d"), (start+datetime.timedelta(days=4)).strftime("%Y-%m-%d"))
+            temp = baseball_scraper.statcast(start.strftime("%Y-%m-%d"), (start+datetime.timedelta(days=4)).strftime("%Y-%m-%d"))
         except ParserError:
             print("ParserError failure at {}".format(start.strftime("%Y-%m-%d")))
             break
@@ -47,6 +48,6 @@ def update_statcast(target_csv_name):
     out = pd.read_csv(target_csv_name)
     start = pd.Timestamp(out['game_date'].sort_values().iloc[-1])
     end = datetime.datetime.now()
-    new = big_scrape(start, end)
+    new = statcast_scrape(start, end)
     out = pd.concat([out,new])
     return out
