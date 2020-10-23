@@ -133,3 +133,10 @@ dmypy.json
 .vs
 .vscode
 
+#local directory for statcast dumps, which may be 100+ MB in size.
+
+statcast_dumps/
+
+#local directory for pickles, usually of trained models.
+
+pickles/
