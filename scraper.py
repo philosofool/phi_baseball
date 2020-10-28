@@ -21,6 +21,18 @@ def statcast_scrape(start,end):
     Usefull because large scrapes take a long time but cancel when they raise Exceptions that
     are generated from the target side. This function allows you to restart the scrape near
     where the exception raised.
+
+    Parameters
+    ----------
+    start: datetime.date
+        A datetime date object specifying the first date you want the scraper to return.
+    
+    end: datetime.date
+        A datetime date object specifying the last date, inclusive, you want the scraper to return.
+
+    Returns
+    -------
+    A pd.DataFrame object containinng all the successfully scraped time slices in the range.
     '''
     scrapes = [] ##
     while True:
