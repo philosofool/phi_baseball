@@ -1,11 +1,9 @@
-import pandas as pd
-
 """
 Contains functions and classes for handling Marcel Projections as proposed by Tom Tango.
 
 See his webpage (http://www.tangotiger.net/archives/stud0346.shtml). See Tango's comment #28 for pitcher details.
 
-WARNING: The directory structure in phi_baseball is note final. File locations may change.
+WARNING: The directory structure in phi_baseball is not final. File locations may change.
 
 Classes
 -------
@@ -16,6 +14,10 @@ MarcelForecaster
     may be subject to change.
 
 """
+
+
+import pandas as pd
+
 
 class MarcelForecaster:
     """
@@ -368,7 +370,7 @@ class MarcelForecaster:
         
         
 
-    def scale_hitter_data(self,row,scaling):
+    def scale_hitter_data(self, row, scaling):
         """
         Returns a players stats given in row scaled to a value; multiplies row by scaling
         """
@@ -376,14 +378,14 @@ class MarcelForecaster:
         row[self.hitter_stat_cols] = x*scaling
         return row
     
-    def scale_pitcher_data(self,row,scaling):
+    def scale_pitcher_data(self, row, scaling):
         """
         Returns a players stats given in row scaled to a value; multiplies row by scaling
         """
         row[self.pitcher_stat_cols] = row[self.pitcher_stat_cols]*scaling
         return row
     
-    def project_hitters(self,season,use_default = False, apply_age = True):
+    def project_hitters(self, season, use_default = False, apply_age = True, ids=None):
         """
         Return a dataframe of the hitters' Marcel forecasts.
         
@@ -399,7 +401,13 @@ class MarcelForecaster:
             
         apply_age: bool (default = True)
             Whether to apply an aging curve. Useful if a data set doesn't include ages. 
+        
+        ids: None or list-like (default = True)
+            A list of playerids specifying which project. If None, all hitters will be projected. 
         """
+        if ids:
+            all_hitters = self.hitters
+            self.hitters = self.hitters[self.hitters['playerid'].isin(ids)]
         df = self._hit_step1(season)
         
         #step 2
@@ -424,8 +432,8 @@ class MarcelForecaster:
         ## In comments, we see that it's actually 29 - Age, and that it should be "applied"
         ## to everything except PA and AB. I think the ideas is that you multiply by 1 + ageAdj
         ## or 1 - ageAdj (if the stat is "bad", e.g., striking out.)
-        
-        df = df.apply(self._hit_step5, axis=1)
+        if apply_age:
+            df = df.apply(self._hit_step5, axis=1)
         
         df['Season'] = season
         df = df[self._init_hitter_cols]
@@ -433,7 +441,7 @@ class MarcelForecaster:
         
         return df
     
-    def project_pitchers(self, season, use_default = False):
+    def project_pitchers(self, season, use_default = False, apply_age=True, ids=None):
         """
         Returns a DataFrame of the pitchers' Marcel Forcasts.
         
@@ -446,7 +454,16 @@ class MarcelForecaster:
         use_default: bool (default = False)
             If True, uses self.default_pitcher as the expected mean performance for regression. 
             If False, calculates the expected mean performance from the data.
+
+        apply_age: bool (default = True)
+            Whether to apply the aging curve step. Useful if data doesn't include ages.
+
+        ids: None or list-like (default = None)
+            A list of ids to project. If None, all pitchers in self.pitchers are projected.
         """
+        if ids:
+            all_pitchers = self.pitchers
+            self.pitchers = self.pitchers[self.pitchers['playerid'].isin(ids)]
         df = self._pit_step1(season).copy()
         #step 2
         mean_guy = self.expected_mean_pitcher(season, use_default = use_default)
@@ -459,12 +476,15 @@ class MarcelForecaster:
         df[stats] = df[stats].apply(lambda x: x/x['IP'], axis = 1)
         df[stats] = df[stats].apply(lambda x: x*prorating.loc[x.name]['IP'], axis=1)
         #step 5
-        df = df.apply(self._pit_step5, axis =1)
+        if apply_age:
+            df = df.apply(self._pit_step5, axis =1)
 
         df['Season'] = season
         df = df[self._init_pitchers_cols]
         self.set_pitcher_rates(df)
-        
+        if ids:
+            self.pitchers = all_pitchers
+
         return df
     
     def set_bad_hitting_stats(self, bad_stats):
