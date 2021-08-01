@@ -8,11 +8,9 @@ This is currently under development and may see changes. Check the documentation
 ## Highlights
 
 ### forcast/
-<<<<<<< HEAD
+
  - contains Python code to generate Marcel season forcasts for baseball players. The [jupyter notebook](forecast/MarcelForecast.ipynb) contains examples and some development notes.
-=======
  - contains Python code to generate Marcel season forcasts for baseball players. The [jupyter notebook](forecast/MarcelForcast.ipynb) contains examples and some development notes.
->>>>>>> 2bb0a18916cb0a948a89c4f8536ce8404dffc26a
  - Investigates the usefulness of StatCast data in predicting [future homeruns](forecast/stat_cast_notebook.ipynb).
 
  
